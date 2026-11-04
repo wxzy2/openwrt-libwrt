@@ -23,6 +23,6 @@ jobs:
       firmware_tag: 360v6-jd6600-imm
       kernel_file: kernel-6.12
       artifact_prefix: 360v6-jd6600-imm
-      manifest_file: imm-qualcommax-ipq60xx.manifest
+      manifest_file: immortalwrt-qualcommax-ipq60xx.manifest
       release_summary: >-
         360 V6 与京东云 AX6600（雅典娜）的 NSS 固件（6.12 内核，NSS 11.4），默认主题 Aurora。两个设备内置 OpenClash、DDNS-Go；AX6600 另外内置 OpenList2、Aria2（含 AriaNg）和 athena-led。
