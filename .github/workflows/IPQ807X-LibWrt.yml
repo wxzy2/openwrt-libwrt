@@ -25,4 +25,4 @@ jobs:
       artifact_prefix: IPQ807X
       manifest_file: libwrt-qualcommax-ipq807x.manifest
       release_summary: >-
-        这是开启全功能NSS的6.12内核固件，默认主题为Aurora；该固件在ImmortalWrt的基础上，默认主题 Aurora。设备内置 OpenClash、DDNS-Go、OpenList2、Aria2；具体详见IPQ807X.config和General.config。
+        Linksys MX4300 的 NSS 固件（6.12 内核，NSS 11.4），默认主题 Aurora。内置 OpenClash、DDNS-Go、OpenList2、Aria2（含 AriaNg），不含 athena-led；具体详见 IPQ807X.config 和 General.config。

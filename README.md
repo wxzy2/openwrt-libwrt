@@ -1,12 +1,13 @@
 # 360 V6 / 京东云 AX6600 — LibWrt NSS 云编译
 
-基于 [laipeng668/openwrt-ci-roc](https://github.com/laipeng668/openwrt-ci-roc) 精简，保留两个编译流程。
+基于 [laipeng668/openwrt-ci-roc](https://github.com/laipeng668/openwrt-ci-roc) 精简，保留三个编译流程。
 
-## 两个编译流程
+## 三个编译流程
 
 | 流程 | 设备 | 源码 / 内核 / NSS | 内置插件 | Release 标签 |
 | --- | --- | --- | --- | --- |
 | `360v6-jd6600.yml` | 360 V6、京东云 AX6600 | `openwrt-6.x`（25.12-nss）/ 6.12 / NSS 11.4（含 mesh） | 都有 OpenClash、DDNS-Go；AX6600 另有 OpenList2、Aria2、athena-led | `360v6-jd6600` |
+| `IPQ807X-LibWrt.yml` | Linksys MX4300 | `openwrt-6.x`（25.12-nss）/ 6.12 / NSS 11.4（含 mesh） | OpenClash、DDNS-Go、OpenList2、Aria2（无 athena-led） | `IPQ807X` |
 | `JDCloud-ImmortalWrt.yml` | 京东云 AX6600 | `immortalwrt`（openwrt-25.12）/ 6.18 / NSS 12.5 | OpenClash、DDNS-Go、OpenList2、Aria2、athena-led | `AX6600-6.18` |
 
 - NSS 版本是整次编译全局的，同一个流程里的设备必须一致。NSS 12.5 只能配 6.18（ImmortalWrt 源码），在 6.12 上 `qca-nss-ecm` 会编译失败；反过来 11.4 对应 6.12。
@@ -19,10 +20,12 @@
 | --- | --- |
 | `.github/workflows/360v6-jd6600.yml` | 入口 1：360 V6 + AX6600（6.12） |
 | `.github/workflows/JDCloud-ImmortalWrt.yml` | 入口 2：AX6600（6.18） |
-| `.github/workflows/Build-OpenWrt.yml` | 被两个入口调用的通用构建流程，不要删 |
+| `.github/workflows/IPQ807X-LibWrt.yml` | 入口 3：Linksys MX4300（ipq807x，6.12） |
+| `.github/workflows/Build-OpenWrt.yml` | 被三个入口调用的通用构建流程，不要删 |
 | `configs/360v6-jd6600.config` | 入口 1 的设备与 NSS 配置 |
 | `configs/JDCloud.config` | 入口 2 的设备与 NSS 配置 |
-| `configs/General.config` | 两个流程共用的通用配置与插件 |
+| `configs/IPQ807X.config` | 入口 3 的设备、NSS 与插件配置 |
+| `configs/General.config` | 各流程共用的通用配置与插件 |
 | `scripts/Roc-script.sh` | 默认 IP、拉取第三方源码、编译前检查 |
 
 ## 增减插件
