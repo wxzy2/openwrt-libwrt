@@ -218,6 +218,31 @@ fi
 if package_enabled luci-app-openclash; then
   rm -rf feeds/luci/applications/luci-app-openclash
   clone_repository https://github.com/vernesong/OpenClash master package/luci-app-openclash
+
+  # 预置 Meta 内核（clash_meta），固件刷好即可用，无需首次联网下载
+  # 三台设备（ipq60xx / ipq807x）都是 aarch64，用 arm64 版本
+  OPENCLASH_CORE_URL="${OPENCLASH_CORE_URL:-https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-arm64.tar.gz}"
+  core_tmp="$(mktemp -d)"
+  core_ok=0
+  for ((attempt = 1; attempt <= GIT_CLONE_RETRY_COUNT; attempt++)); do
+    if curl -fsSL --retry 3 --connect-timeout 20 -o "$core_tmp/core.tar.gz" "$OPENCLASH_CORE_URL" \
+      && tar -xzf "$core_tmp/core.tar.gz" -C "$core_tmp"; then
+      core_ok=1
+      break
+    fi
+    echo "OpenClash core download failed; retrying ($((attempt + 1))/$GIT_CLONE_RETRY_COUNT)" >&2
+    sleep $((attempt * 2))
+  done
+  core_bin="$(find "$core_tmp" -type f ! -name core.tar.gz -print -quit)"
+  # 必须是 ELF 可执行文件，否则直接报错，避免固件里放进一个坏内核
+  if [ "$core_ok" -ne 1 ] || [ -z "$core_bin" ] || [ "$(head -c 4 "$core_bin" | od -An -c | tr -d ' ')" != '177ELF' ]; then
+    echo "Error: failed to prepare OpenClash clash_meta core from $OPENCLASH_CORE_URL" >&2
+    exit 1
+  fi
+  rm -rf files/etc/openclash/core
+  mkdir -p files/etc/openclash/core
+  install -m 0755 "$core_bin" files/etc/openclash/core/clash_meta
+  rm -rf "$core_tmp"
 fi
 
 ./scripts/feeds update -i -a

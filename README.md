@@ -6,9 +6,9 @@
 
 | 流程 | 设备 | 源码 / 内核 / NSS | 内置插件 | Release 标签 |
 | --- | --- | --- | --- | --- |
-| `360v6-jd6600.yml` | 360 V6、京东云 AX6600 | `openwrt-6.x`（25.12-nss）/ 6.12 / NSS 11.4（含 mesh） | 都有 OpenClash、DDNS-Go；AX6600 另有 OpenList2、Aria2、athena-led | `360v6-jd6600` |
-| `IPQ807X-LibWrt.yml` | Linksys MX4300 | `openwrt-6.x`（25.12-nss）/ 6.12 / NSS 11.4（含 mesh） | OpenClash、DDNS-Go、OpenList2、Aria2（无 athena-led） | `IPQ807X` |
-| `JDCloud-ImmortalWrt.yml` | 京东云 AX6600 | `immortalwrt`（openwrt-25.12）/ 6.18 / NSS 12.5 | OpenClash、DDNS-Go、OpenList2、Aria2、athena-led | `AX6600-6.18` |
+| `360v6-jd6600.yml` | 360 V6、京东云 AX6600 | `openwrt-6.x`（25.12-nss）/ 6.12 / NSS 11.4（含 mesh） | 都有 OpenClash（预置 clash_meta 内核）、DDNS-Go；360 V6 另有 zram；AX6600 另有 OpenList2、Aria2、athena-led | `360v6-jd6600` |
+| `IPQ807X-LibWrt.yml` | Linksys MX4300 | `openwrt-6.x`（25.12-nss）/ 6.12 / NSS 11.4（含 mesh） | OpenClash（预置 clash_meta 内核）、DDNS-Go、OpenList2、Aria2（无 athena-led、无 zram） | `IPQ807X` |
+| `JDCloud-ImmortalWrt.yml` | 京东云 AX6600 | `immortalwrt`（openwrt-25.12）/ 6.18 / NSS 12.5 | OpenClash（预置 clash_meta 内核）、DDNS-Go、OpenList2、Aria2、athena-led（无 zram） | `AX6600-6.18` |
 
 - NSS 版本是整次编译全局的，同一个流程里的设备必须一致。NSS 12.5 只能配 6.18（ImmortalWrt 源码），在 6.12 上 `qca-nss-ecm` 会编译失败；反过来 11.4 对应 6.12。
 - 默认管理地址：`10.1.1.1`，用户 `root`，默认密码为空，**首次登录后请立即设置密码**
