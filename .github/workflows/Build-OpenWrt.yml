@@ -111,15 +111,20 @@ jobs:
     - name: Initialization Environment(初始化环境)
       env:
         DEBIAN_FRONTEND: noninteractive
+        # 防止 apt 安装后 needrestart 重启系统服务，导致 runner 失联（The hosted runner lost communication with the server）
+        NEEDRESTART_MODE: a
+        NEEDRESTART_SUSPEND: "1"
       run: |
+        # 彻底禁用 needrestart，避免它在安装依赖后重启 runner 依赖的服务
+        sudo mkdir -p /etc/needrestart/conf.d
+        echo '$nrconf{restart} = "l";' | sudo tee /etc/needrestart/conf.d/99-ci.conf > /dev/null
         sudo -E apt-get -y update
-        sudo -E apt-get -y install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+        sudo -E apt-get -y install --no-install-recommends ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
           bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib \
           git gperf haveged help2man intltool jq libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev \
           libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libfuse-dev libssl-dev libtool lrzsz \
           genisoimage msmtp nano ninja-build p7zip p7zip-full patch pkgconf python3 python3-pip libpython3-dev qemu-utils \
           rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
-        sudo -E systemctl daemon-reload
         sudo timedatectl set-timezone "$TZ"
 
     - name: Checkout(检出代码)

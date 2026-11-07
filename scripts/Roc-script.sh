@@ -182,7 +182,7 @@ rm -rf feeds/packages/lang/golang
 git_sparse_clone master https://github.com/laipeng668/packages lang/golang
 mv package/golang feeds/packages/lang/golang
 
-# Aria2 & AriaNg & OpenList2（仅 AX6600 使用，由设备配置里的 DEVICE_PACKAGES 触发）
+# Aria2 & AriaNg & OpenList2（AX6600、MX4300/HomeWRK 使用，由设备配置触发）
 if package_enabled luci-app-aria2 aria2; then
   rm -rf feeds/packages/net/aria2
   git_sparse_clone aria2 https://github.com/laipeng668/packages net/aria2
@@ -208,6 +208,12 @@ if package_enabled luci-app-aurora-config; then
   clone_repository https://github.com/eamonxg/luci-app-aurora-config master feeds/luci/applications/luci-app-aurora-config
 fi
 
+# Argon 主题（所有设备都内置；默认主题仍是 Aurora，可在 LuCI「系统 → 外观」切换）
+if package_enabled luci-theme-argon; then
+  rm -rf feeds/luci/themes/luci-theme-argon
+  clone_repository https://github.com/jerrykuku/luci-theme-argon master feeds/luci/themes/luci-theme-argon
+fi
+
 # 京东云 AX6600（re-cs-02）的 LED 插件
 if package_enabled luci-app-athena-led luci-i18n-athena-led-zh-cn; then
   clone_repository https://github.com/NONGFAH/luci-app-athena-led main package/luci-app-athena-led
@@ -220,7 +226,7 @@ if package_enabled luci-app-openclash; then
   clone_repository https://github.com/vernesong/OpenClash master package/luci-app-openclash
 
   # 预置 Meta 内核（clash_meta），固件刷好即可用，无需首次联网下载
-  # 三台设备（ipq60xx / ipq807x）都是 aarch64，用 arm64 版本
+  # 所有设备（ipq60xx / ipq807x）都是 aarch64，用 arm64 版本
   OPENCLASH_CORE_URL="${OPENCLASH_CORE_URL:-https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-arm64.tar.gz}"
   core_tmp="$(mktemp -d)"
   core_ok=0
@@ -258,7 +264,7 @@ require_package_dir() {
   fi
 }
 
-for pkg in ddns-go luci-app-ddns-go luci-app-openclash luci-app-openlist2 openlist2 luci-app-aria2 aria2 ariang; do
+for pkg in luci-theme-argon luci-theme-aurora ddns-go luci-app-ddns-go luci-app-openclash luci-app-openlist2 openlist2 luci-app-aria2 aria2 ariang; do
   if package_enabled "$pkg"; then
     require_package_dir "$pkg"
   fi

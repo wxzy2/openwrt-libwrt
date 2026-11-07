@@ -25,4 +25,4 @@ jobs:
       artifact_prefix: AX6600-6.18
       manifest_file: immortalwrt-qualcommax-ipq60xx.manifest
       release_summary: >-
-        京东云 AX6600（雅典娜）的 NSS 固件（6.18 内核，NSS 12.5），默认主题 Aurora。内置 OpenClash（已预置 clash_meta 内核）、DDNS-Go、OpenList2、Aria2（含 AriaNg）和 athena-led。
+        京东云 AX6600（雅典娜）的 NSS 固件（6.18 内核，NSS 12.5），默认主题 Aurora，另内置 Argon 主题可切换。内置 OpenClash（已预置 clash_meta 内核）、DDNS-Go、OpenList2、Aria2（含 AriaNg）和 athena-led。
